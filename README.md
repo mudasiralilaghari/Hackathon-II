@@ -1,89 +1,112 @@
-# Hackathon-2 - Multi-User Todo Full-Stack Web Application
+# Multi-User Todo Web Application
 
-This repository contains the implementation of a multi-user todo web application as part of Hackathon Phase 2.
-
-## Project Overview
-
-The application is a full-stack web application with:
-- **Backend**: FastAPI with SQLModel and JWT authentication
-- **Frontend**: Next.js with App Router and React components
-- **Database**: Neon PostgreSQL with persistent storage
-- **Authentication**: Secure JWT-based user authentication with Better Auth
-- **Task Management**: Complete CRUD operations with user-specific data isolation
+A full-stack web application that allows users to manage their personal todo lists with secure authentication and data isolation.
 
 ## Features
 
-- User Registration and Authentication (Signup/Signin)
-- Task Management (Create, Read, Update, Delete)
-- Task Completion Toggle
-- User-specific Data Isolation
-- Responsive UI Design
-- Clean Architecture with Separation of Concerns
+- User authentication (signup/signin)
+- Task management (create, read, update, delete)
+- Task completion toggle
+- User-specific task isolation
+- Persistent storage with Neon PostgreSQL
+- JWT-based authentication
 
-## Getting Started
+## Tech Stack
 
-1. Clone the repository
-2. Navigate to the `phase-2-todo-fullstack-app` directory
-3. Follow the instructions in the README.md file in that directory
+- **Frontend**: Next.js (App Router)
+- **Backend**: FastAPI
+- **Database**: Neon Serverless PostgreSQL
+- **ORM**: SQLModel
+- **Authentication**: JWT with Better Auth
 
-## Directory Structure
+## Setup
 
-```
-Hackathon-2/
-├── phase-1-cli-app/                     # Phase 1 Console Todo App
-├── phase-2-todo-fullstack-app/          # Phase 2 Full-Stack Todo Application
-│   ├── backend/                         # Backend API (FastAPI)
-│   │   ├── src/
-│   │   │   ├── api/
-│   │   │   ├── middleware/
-│   │   │   ├── models/
-│   │   │   ├── services/
-│   │   │   └── main.py
-│   │   ├── requirements.txt
-│   │   └── .env
-│   ├── frontend/                        # Frontend UI (Next.js)
-│   │   ├── src/
-│   │   │   ├── app/
-│   │   │   ├── components/
-│   │   │   ├── services/
-│   │   │   └── pages/
-│   │   ├── package.json
-│   │   └── .env.local
-│   ├── specs/                           # Feature specifications
-│   ├── history/                         # Development history
-│   └── README.md                        # Phase 2 application documentation
-├── README.md                            # This file (Project overview)
-└── other files...
-```
+### Backend Setup
 
-## Phase 2 - Full-Stack Todo Application
+1. Navigate to the backend directory:
+   ```bash
+   cd backend
+   ```
 
-The `phase-2-todo-fullstack-app` directory contains the complete implementation of the multi-user todo application with:
+2. Create a virtual environment:
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
 
-- **Backend**: FastAPI with SQLModel and JWT authentication
-- **Frontend**: Next.js with App Router and React components
-- **Database**: Neon PostgreSQL with persistent storage
-- **Authentication**: Secure JWT-based user authentication
-- **Task Management**: Complete CRUD operations with user-specific isolation
+3. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-## Features
+4. Set up environment variables:
+   Create a `.env` file in the backend directory with the following:
+   ```env
+   DATABASE_URL=postgresql://username:password@localhost:5432/todo_app
+   SECRET_KEY=your-super-secret-key-change-in-production
+   ALGORITHM=HS256
+   ACCESS_TOKEN_EXPIRE_MINUTES=30
+   NEON_DATABASE_URL=your-neon-database-url
+   ```
 
-- User Registration and Authentication (Signup/Signin)
-- Task Management (Create, Read, Update, Delete)
-- Task Completion Toggle
-- User-specific Data Isolation
-- Responsive UI Design
-- Clean Architecture with Separation of Concerns
+5. Run database migrations:
+   ```bash
+   alembic upgrade head
+   ```
 
-## Getting Started
+6. Start the backend server:
+   ```bash
+   uvicorn src.main:app --reload --port 8000
+   ```
 
-To run the application:
+### Frontend Setup
 
-1. Navigate to the `phase-2-todo-fullstack-app` directory
-2. Follow the instructions in the README.md file in that directory
+1. Navigate to the frontend directory:
+   ```bash
+   cd frontend  # from project root
+   ```
 
-## Access Points
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-- **Backend API**: http://127.0.0.1:8000
-- **Frontend UI**: http://localhost:3000
-- **API Documentation**: http://127.0.0.1:8000/docs
+3. Set up environment variables:
+   Create a `.env.local` file in the frontend directory with the following:
+   ```env
+   NEXT_PUBLIC_API_URL=http://localhost:8000
+   NEXT_PUBLIC_JWT_SECRET=your-jwt-secret
+   ```
+
+4. Start the frontend development server:
+   ```bash
+   npm run dev
+   ```
+
+## API Documentation
+
+The API documentation is available at:
+- Backend: `http://localhost:8000/docs` (Swagger UI)
+- Backend: `http://localhost:8000/redoc` (ReDoc)
+
+## Key Endpoints
+
+### Authentication
+- `POST /auth/signup` - Create a new user account
+- `POST /auth/signin` - Authenticate and get JWT token
+
+### Tasks
+- `GET /tasks` - Get all tasks for the authenticated user
+- `POST /tasks` - Create a new task
+- `PUT /tasks/{id}` - Update a task
+- `DELETE /tasks/{id}` - Delete a task
+- `PATCH /tasks/{id}/toggle` - Toggle task completion status
+
+## Architecture Overview
+
+The application follows a clean architecture pattern with clear separation of concerns:
+
+- **Backend**: FastAPI application with SQLModel ORM, handling authentication and business logic
+- **Frontend**: Next.js application with React components, handling user interface and interactions
+- **Database**: Neon PostgreSQL for persistent data storage
+- **Authentication**: JWT-based authentication
