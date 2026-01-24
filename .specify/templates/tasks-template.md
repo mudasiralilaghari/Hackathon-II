@@ -62,12 +62,14 @@ description: "Task list template for feature implementation"
 
 Examples of foundational tasks (adjust based on your project):
 
-- [ ] T004 Setup database schema and migrations framework
-- [ ] T005 [P] Implement authentication/authorization framework
-- [ ] T006 [P] Setup API routing and middleware structure
+- [ ] T004 Setup database schema and migrations framework (Neon database)
+- [ ] T005 [P] Implement JWT authentication/authorization framework for all APIs
+- [ ] T006 [P] Setup API routing and middleware structure with authentication enforcement
 - [ ] T007 Create base models/entities that all stories depend on
 - [ ] T008 Configure error handling and logging infrastructure
-- [ ] T009 Setup environment configuration management
+- [ ] T009 Setup environment configuration management (no hardcoded secrets)
+- [ ] T010 Implement clean architecture structure with separation of concerns
+- [ ] T011 Setup spec-driven development workflow and documentation structure
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -156,8 +158,12 @@ Examples of foundational tasks (adjust based on your project):
 - [ ] TXXX [P] Additional unit tests (if requested) in tests/unit/
 - [ ] TXXX Security hardening
 - [ ] TXXX Run quickstart.md validation
-
----
+- [ ] TXXX Verify all APIs follow RESTful principles
+- [ ] TXXX Verify frontend is responsive on different screen sizes
+- [ ] TXXX Verify no hardcoded secrets exist in codebase
+- [ ] TXXX Verify all business logic has spec references
+- [ ] TXXX Verify users can only access their own data
+- [ ] TXXX Verify all endpoints require JWT authentication
 
 ## Dependencies & Execution Order
 

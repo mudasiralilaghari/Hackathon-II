@@ -84,16 +84,18 @@
 
 ### Functional Requirements
 
-- **FR-001**: System MUST [specific capability, e.g., "allow users to create accounts"]
-- **FR-002**: System MUST [specific capability, e.g., "validate email addresses"]  
-- **FR-003**: Users MUST be able to [key interaction, e.g., "reset their password"]
-- **FR-004**: System MUST [data requirement, e.g., "persist user preferences"]
-- **FR-005**: System MUST [behavior, e.g., "log all security events"]
+- **FR-001**: System MUST follow spec-driven development - all features must be documented in spec before implementation
+- **FR-002**: System MUST require authentication for all API endpoints using JWT tokens
+- **FR-003**: Users MUST only be able to access their own data - no cross-user data access
+- **FR-004**: System MUST implement clean architecture with clear separation of concerns
+- **FR-005**: System MUST store all secrets in environment variables, not in source code
+- **FR-006**: System MUST follow RESTful API principles for all backend endpoints
+- **FR-007**: System MUST be responsive and work on different screen sizes
+- **FR-008**: System MUST use persistent database storage (Neon)
 
 *Example of marking unclear requirements:*
 
-- **FR-006**: System MUST authenticate users via [NEEDS CLARIFICATION: auth method not specified - email/password, SSO, OAuth?]
-- **FR-007**: System MUST retain user data for [NEEDS CLARIFICATION: retention period not specified]
+- **FR-009**: [NEEDS CLARIFICATION: specific requirement that needs clarification]
 
 ### Key Entities *(include if feature involves data)*
 
