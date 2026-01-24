@@ -1,0 +1,3 @@
+# Requirements for the In-Memory TODO CLI Application
+# This project uses only Python standard library components
+# No external dependencies required
