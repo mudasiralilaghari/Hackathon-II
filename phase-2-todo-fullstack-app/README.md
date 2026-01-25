@@ -1,83 +1,118 @@
-# In-Memory TODO CLI Application
+# Full-Stack TODO Application
 
-A simple command-line interface application for managing TODO tasks. Tasks are stored entirely in memory and will be lost when the application exits.
+A comprehensive web-based TODO application with frontend and backend components.
 
 ## Features
+- Complete CRUD operations for tasks
+- User authentication and authorization
+- Responsive web interface
+- Data persistence
+- Modern UI/UX design
+- Real-time updates
+- Cross-platform compatibility
 
-- Add new tasks with title and description
-- View all tasks with status indicators
-- Update task titles and descriptions
-- Delete tasks by ID
-- Mark tasks as complete or incomplete
-- Unique auto-incremented IDs for each task
-- Clear user feedback for all operations
-- Graceful handling of invalid inputs
-
-## Requirements
-
-- Python 3.13 or higher
-
-## Installation
-
-1. Clone or download the repository
-2. Navigate to the project directory
-3. Make sure you have Python 3.13+ installed
-
-## Usage
-
-Run the application using Python:
-
-```bash
-python -m src.main
-```
-
-Follow the on-screen menu prompts to interact with the application:
-
-1. **Add a new task**: Enter a title and optional description
-2. **View all tasks**: See a list of all tasks with their status
-3. **Update a task**: Modify the title or description of an existing task
-4. **Delete a task**: Remove a task by its ID
-5. **Mark task as complete/incomplete**: Change the completion status of a task
-6. **Exit**: Quit the application
+## Technology Stack
+- Frontend: Next.js, React, Tailwind CSS
+- Backend: Node.js/Express or Python/FastAPI (depending on implementation)
+- Database: PostgreSQL/MySQL or MongoDB
+- Authentication: JWT or OAuth
+- Deployment: Vercel/Netlify or Heroku
 
 ## Project Structure
-
 ```
-src/
-├── models/
-│   └── task.py          # Task data model
-├── services/
-│   └── task_manager.py  # Task business logic
-├── cli/
-│   └── cli_interface.py # Command-line interface
-└── main.py              # Application entry point
-
-tests/
-├── unit/
-│   ├── test_task.py     # Task model tests
-│   └── test_task_manager.py # Task manager tests
-├── integration/
-│   └── test_cli.py      # CLI integration tests
-└── conftest.py          # Test configuration
+phase-2-todo-fullstack-app/
+├── frontend/                 # Frontend application
+│   ├── pages/               # Page components
+│   ├── components/          # Reusable components
+│   ├── styles/              # Styling files
+│   ├── public/              # Static assets
+│   └── package.json         # Frontend dependencies
+├── backend/                 # Backend application
+│   ├── controllers/         # Request handlers
+│   ├── models/              # Data models
+│   ├── routes/              # API routes
+│   ├── middleware/          # Middleware functions
+│   └── server.js            # Server entry point
+├── specs/                   # Project specifications
+├── src/                     # Source code
+├── tests/                   # Test files
+├── .env.example             # Environment variables template
+├── .gitignore               # Git ignore rules
+├── README.md                # This file
+├── package.json             # Project dependencies
+└── requirements.txt         # Python dependencies (if applicable)
 ```
 
-## Architecture
+## Setup Instructions
 
-The application follows clean architecture principles with separation of concerns:
+### Prerequisites
+- Node.js (v14 or higher)
+- npm or yarn
+- Python 3.8+ (if using Python backend)
+- Database (PostgreSQL, MySQL, or MongoDB)
 
-- **Models**: Define data structures (Task model)
-- **Services**: Handle business logic (TaskManager)
-- **CLI**: Handle user interface and input/output
+### Installation
+1. Clone the repository
+2. Navigate to the project directory
+3. Install dependencies:
+   ```bash
+   # For frontend
+   cd frontend
+   npm install
+   
+   # For backend (if separate)
+   cd ../backend
+   npm install  # or pip install -r requirements.txt
+   ```
+4. Set up environment variables:
+   ```bash
+   cp .env.example .env
+   # Edit .env with your configuration
+   ```
+5. Start the development servers:
+   ```bash
+   # Frontend
+   cd frontend
+   npm run dev
+   
+   # Backend (if separate)
+   cd ../backend
+   npm run dev  # or python app.py
+   ```
+
+## API Documentation
+The application provides a RESTful API for managing TODO tasks:
+- `GET /api/tasks` - Retrieve all tasks
+- `POST /api/tasks` - Create a new task
+- `PUT /api/tasks/:id` - Update a task
+- `DELETE /api/tasks/:id` - Delete a task
+- `PATCH /api/tasks/:id/status` - Update task status
 
 ## Testing
-
 To run the tests:
-
 ```bash
-pip install pytest
-pytest tests/
+# Frontend tests
+cd frontend
+npm test
+
+# Backend tests
+cd backend
+npm test  # or python -m pytest
 ```
 
-## License
+## Deployment
+The application can be deployed to platforms like:
+- Vercel (for Next.js frontend)
+- Netlify (for static sites)
+- Heroku (for full-stack apps)
+- AWS/GCP/Azure (cloud platforms)
 
+## Contributing
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## License
 This project is created for educational purposes as part of a hackathon project.
