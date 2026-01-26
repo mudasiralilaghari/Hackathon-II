@@ -1,0 +1,4 @@
+runtime:
+  huggingface: 1.0.0
+
+sdk: docker
