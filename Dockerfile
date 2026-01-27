@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y \
     g++ \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements first to leverage Docker cache
+# Copy the requirements file
 COPY requirements.txt .
 
 # Install Python dependencies
@@ -21,4 +21,4 @@ COPY . .
 EXPOSE 8000
 
 # Set the startup command to use uvicorn with the PORT environment variable
-CMD ["sh", "-c", "uvicorn backend.src.main:app --host 0.0.0.0 --port ${PORT:-8000}"]
+CMD sh -c "uvicorn backend.src.main:app --host 0.0.0.0 --port \${PORT:-8000}"

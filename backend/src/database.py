@@ -5,8 +5,27 @@ from .models.task import Task
 import os
 
 # Get database URL from environment
-# Use Neon PostgreSQL database as specified with proper SSL configuration
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://neondb_owner:npg_qg07lwzQrsbL@ep-broad-lake-ahts9zl6-pooler.c-3.us-east-1.aws.neon.tech/neondb?sslmode=require")
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+# Clean the DATABASE_URL if it contains extra text
+if DATABASE_URL:
+    # Remove any extra text that might have been appended
+    if DATABASE_URL.startswith("psql '") and DATABASE_URL.endswith("'"):
+        # Extract the actual URL from between the psql command
+        start_idx = 6  # Length of "psql '"
+        end_idx = len(DATABASE_URL) - 1  # Exclude the last quote
+        DATABASE_URL = DATABASE_URL[start_idx:end_idx]
+    elif DATABASE_URL.startswith("psql "):
+        # Extract the URL from the psql command
+        DATABASE_URL = DATABASE_URL[5:].strip().rstrip("'").lstrip("'")
+
+if not DATABASE_URL:
+    # Fallback to a default SQLite database for development/testing
+    # In production, ensure DATABASE_URL is set in your Space settings
+    DATABASE_URL = "sqlite:///./todo_app.db"
+    print("WARNING: DATABASE_URL not set, using local SQLite database. This is not recommended for production.")
+else:
+    print("Using database in database.py:", DATABASE_URL)
 
 # Create engine with proper PostgreSQL support
 # Handle SSL connection parameters for Neon

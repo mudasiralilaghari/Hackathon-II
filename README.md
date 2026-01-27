@@ -1,71 +1,58 @@
-# Hackathon II - Full Project Repository
+---
+title: Full-Stack Todo App
+emoji: 🚀
+colorFrom: purple
+colorTo: yellow
+sdk: docker
+pinned: false
+license: mit
+---
 
-This repository contains both phases of the Hackathon II project:
+# Full-Stack Todo Application
 
-## Phase 1: Console TODO Application
-A simple command-line interface application for managing TODO tasks. Tasks are stored entirely in memory and will be lost when the application exits.
+This is a full-stack todo application built with FastAPI (backend) and Next.js (frontend), deployed on Hugging Face Spaces using Docker.
 
-### Features
-- Add new tasks with title and description
-- View all tasks with status indicators
-- Update task titles and descriptions
-- Delete tasks by ID
-- Mark tasks as complete or incomplete
-- Unique auto-incremented IDs for each task
-- Clear user feedback for all operations
-- Graceful handling of invalid inputs
+## Features
 
-### Requirements
-- Python 3.13 or higher
+- User authentication (signup/signin)
+- Task management (create, read, update, delete)
+- Task completion toggle
+- User-specific task isolation
+- Persistent storage with Neon PostgreSQL
+- JWT-based authentication
 
-### Project Structure
-```
-src/
-├── models/
-│   └── task.py          # Task data model
-├── services/
-│   └── task_manager.py  # Task business logic
-├── cli/
-│   └── cli_interface.py # Command-line interface
-└── main.py              # Application entry point
+## Tech Stack
 
-tests/
-├── unit/
-│   ├── test_task.py     # Task model tests
-│   └── test_task_manager.py # Task manager tests
-├── integration/
-│   └── test_cli.py      # CLI integration tests
-└── conftest.py          # Test configuration
-```
+- Backend: FastAPI
+- Database: Neon Serverless PostgreSQL
+- ORM: SQLModel
+- Authentication: JWT
+- Frontend: Next.js (App Router)
+- Deployment: Docker on Hugging Face Spaces
 
-## Phase 2: Full-Stack TODO Application
-A comprehensive web-based TODO application with frontend and backend components.
+## API Endpoints
 
-### Features
-- Complete CRUD operations for tasks
-- User authentication and authorization
-- Responsive web interface
-- Data persistence
-- Modern UI/UX design
+- `/docs` - Interactive API documentation (Swagger UI)
+- `/redoc` - Alternative API documentation (ReDoc)
+- `/auth/signup` - Create a new user account
+- `/auth/signin` - Authenticate and get JWT token
+- `/tasks` - Manage user tasks
 
-## Repository Structure
-```
-Hackathon-II/
-├── phase-1-console-todo-app/     # Console application
-├── phase-2-todo-fullstack-app/   # Full-stack application
-└── README.md                     # This file
-```
+## Architecture
 
-## Setup Instructions
+The application follows a clean architecture pattern with clear separation of concerns:
 
-### For Phase 1 (Console App):
-1. Navigate to `phase-1-console-todo-app/`
-2. Ensure Python 3.13+ is installed
-3. Run: `python -m src.main`
+- Backend: FastAPI application with SQLModel ORM, handling authentication and business logic
+- Database: Neon PostgreSQL for persistent data storage
+- Authentication: JWT-based authentication
 
-### For Phase 2 (Full-Stack App):
-1. Navigate to `phase-2-todo-fullstack-app/`
-2. Follow the specific setup instructions in that directory
+## Environment Variables
 
-## License
-This project is created for educational purposes as part of a hackathon project.
+The application requires the following environment variables to be set in the Space settings:
+
+- `DATABASE_URL`: Connection string for Neon PostgreSQL database
+- `SECRET_KEY`: Secret key for JWT token signing
+- `ALGORITHM`: Algorithm for JWT (default: HS256)
+- `ACCESS_TOKEN_EXPIRE_MINUTES`: Token expiration time
+
+These have been configured in the Space secrets.
