@@ -1,7 +1,7 @@
 spec:
   python: "3.10"
   requirements: "requirements.txt"
-  app_file: app.py
+  app_file: app_interface.py
   sdk: docker
   hardware:
     cpu_basic:
