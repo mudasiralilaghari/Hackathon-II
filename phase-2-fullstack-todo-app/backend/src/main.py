@@ -99,9 +99,9 @@ app.add_middleware(
 
 # Import and include API routes
 try:
-    from src.api import auth_routes, task_routes
-    app.include_router(auth_routes.router, prefix="", tags=["Authentication"])  # No prefix since auth_routes already has /auth
-    app.include_router(task_routes.router, prefix="", tags=["Tasks"])  # No prefix since task_routes already has /tasks
+    from .api import auth_routes, task_routes
+    app.include_router(auth_routes.router)  # auth_routes already has /auth prefix
+    app.include_router(task_routes.router)  # task_routes already has /tasks prefix
 except ImportError as e:
     print(f"Critical Error: Could not import API routes: {e}")
     raise e
