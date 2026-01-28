@@ -118,6 +118,11 @@ def read_root():
 def health_check():
     return {"status": "healthy", "message": "API is running correctly"}
 
+# Add a test endpoint to verify API functionality
+@app.get("/test")
+def test_endpoint():
+    return {"status": "success", "message": "API is responding correctly"}
+
 # Add API documentation endpoints
 @app.get("/docs")
 def get_docs():
