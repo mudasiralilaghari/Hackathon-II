@@ -4,7 +4,11 @@ import threading
 import time
 import requests
 from fastapi import FastAPI
-from backend.src.main import app as fastapi_app
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), 'phase-2-fullstack-todo-app'))
+
+from phase_2_fullstack_todo_app.backend.src.main import app as fastapi_app
 import uvicorn
 import os
 
