@@ -91,10 +91,12 @@ app = FastAPI(lifespan=lifespan)
 # Add CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["*"],  # Allow all origins during development
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    # Add exposed headers to allow frontend to access authorization header
+    allow_expose_headers=["Access-Control-Allow-Origin", "Authorization"]
 )
 
 # Import and include API routes
