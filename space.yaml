@@ -1,0 +1,9 @@
+spec:
+  python: "3.10"
+  requirements: "requirements.txt"
+  app_file: app.py
+  sdk: docker
+  hardware:
+    cpu_basic:
+      cpu: 2
+      memory: 8Gi
