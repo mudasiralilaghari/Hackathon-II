@@ -113,4 +113,15 @@ except ImportError as e:
 def read_root():
     return {"message": "Welcome to the Todo API - Neon DB Connected"}
 
+# Add a health check endpoint
+@app.get("/health")
+def health_check():
+    return {"status": "healthy", "message": "API is running correctly"}
+
+# Add API documentation endpoints
+@app.get("/docs")
+def get_docs():
+    from fastapi.openapi.utils import get_openapi
+    return get_openapi(title=app.title, version=app.version, routes=app.routes)
+
 
