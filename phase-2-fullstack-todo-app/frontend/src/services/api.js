@@ -1,5 +1,5 @@
 // src/services/api.js
-export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
+export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://fazalahmed-full-stack-todo-app.hf.space';
 
 // Define the apiCall function properly
 const apiCall = async (endpoint, options = {}) => {
@@ -21,6 +21,14 @@ const apiCall = async (endpoint, options = {}) => {
   console.log('With headers:', config.headers); // Debug log
 
   const response = await fetch(`${API_BASE_URL}${endpoint}`, config);
+
+  // Check if the response is HTML instead of JSON
+  const contentType = response.headers.get('content-type');
+  if (contentType && contentType.includes('text/html')) {
+    const htmlResponse = await response.text();
+    console.error('Received HTML response instead of JSON:', htmlResponse.substring(0, 100) + '...');
+    throw new Error('Backend API is returning HTML instead of JSON. Check if the backend is properly deployed and accessible.');
+  }
 
   if (response.status === 401) {
     // Token might be expired, redirect to signin
@@ -44,6 +52,14 @@ export const authAPI = {
       body: JSON.stringify(userData),
     });
 
+    // Check if the response is HTML instead of JSON
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('text/html')) {
+      const htmlResponse = await response.text();
+      console.error('Received HTML response instead of JSON:', htmlResponse.substring(0, 100) + '...');
+      throw new Error('Backend API is returning HTML instead of JSON. Check if the backend is properly deployed and accessible.');
+    }
+
     if (!response.ok) {
       const errorData = await response.json();
       throw new Error(errorData.detail || 'Signup failed');
@@ -62,6 +78,14 @@ export const authAPI = {
       body: formData,
     });
 
+    // Check if the response is HTML instead of JSON
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('text/html')) {
+      const htmlResponse = await response.text();
+      console.error('Received HTML response instead of JSON:', htmlResponse.substring(0, 100) + '...');
+      throw new Error('Backend API is returning HTML instead of JSON. Check if the backend is properly deployed and accessible.');
+    }
+
     if (!response.ok) {
       const errorData = await response.json();
       throw new Error(errorData.detail || 'Signin failed');
@@ -76,6 +100,14 @@ export const authAPI = {
 
     const response = await apiCall('/auth/me');
     if (!response.ok) {
+      // Check if the response is HTML instead of JSON
+      const contentType = response.headers.get('content-type');
+      if (contentType && contentType.includes('text/html')) {
+        const htmlResponse = await response.text();
+        console.error('Received HTML response instead of JSON:', htmlResponse.substring(0, 100) + '...');
+        throw new Error('Backend API is returning HTML instead of JSON. Check if the backend is properly deployed and accessible.');
+      }
+
       const errorText = await response.text();
       console.error('Get user error response:', errorText); // Debug logging
       throw new Error(`Failed to get user: ${response.status}`);
@@ -87,6 +119,13 @@ export const authAPI = {
 export const taskAPI = {
   getTasks: async () => {
     const response = await apiCall('/tasks');
+    // Check if the response is HTML instead of JSON
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('text/html')) {
+      const htmlResponse = await response.text();
+      console.error('Received HTML response instead of JSON:', htmlResponse.substring(0, 100) + '...');
+      throw new Error('Backend API is returning HTML instead of JSON. Check if the backend is properly deployed and accessible.');
+    }
     if (!response.ok) {
       throw new Error('Failed to get tasks');
     }
@@ -98,6 +137,13 @@ export const taskAPI = {
       method: 'POST',
       body: JSON.stringify(taskData),
     });
+    // Check if the response is HTML instead of JSON
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('text/html')) {
+      const htmlResponse = await response.text();
+      console.error('Received HTML response instead of JSON:', htmlResponse.substring(0, 100) + '...');
+      throw new Error('Backend API is returning HTML instead of JSON. Check if the backend is properly deployed and accessible.');
+    }
     if (!response.ok) {
       throw new Error('Failed to create task');
     }
@@ -109,6 +155,13 @@ export const taskAPI = {
       method: 'PUT',
       body: JSON.stringify(taskData),
     });
+    // Check if the response is HTML instead of JSON
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('text/html')) {
+      const htmlResponse = await response.text();
+      console.error('Received HTML response instead of JSON:', htmlResponse.substring(0, 100) + '...');
+      throw new Error('Backend API is returning HTML instead of JSON. Check if the backend is properly deployed and accessible.');
+    }
     if (!response.ok) {
       throw new Error('Failed to update task');
     }
@@ -119,6 +172,13 @@ export const taskAPI = {
     const response = await apiCall(`/tasks/${id}`, {
       method: 'DELETE',
     });
+    // Check if the response is HTML instead of JSON
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('text/html')) {
+      const htmlResponse = await response.text();
+      console.error('Received HTML response instead of JSON:', htmlResponse.substring(0, 100) + '...');
+      throw new Error('Backend API is returning HTML instead of JSON. Check if the backend is properly deployed and accessible.');
+    }
     if (!response.ok) {
       throw new Error('Failed to delete task');
     }
@@ -129,6 +189,13 @@ export const taskAPI = {
     const response = await apiCall(`/tasks/${id}/toggle`, {
       method: 'PATCH',
     });
+    // Check if the response is HTML instead of JSON
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('text/html')) {
+      const htmlResponse = await response.text();
+      console.error('Received HTML response instead of JSON:', htmlResponse.substring(0, 100) + '...');
+      throw new Error('Backend API is returning HTML instead of JSON. Check if the backend is properly deployed and accessible.');
+    }
     if (!response.ok) {
       throw new Error('Failed to toggle task completion');
     }

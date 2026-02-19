@@ -91,17 +91,19 @@ app = FastAPI(lifespan=lifespan)
 # Add CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["*"],  # Allow all origins during development
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    # Add exposed headers to allow frontend to access authorization header
+    allow_expose_headers=["Access-Control-Allow-Origin", "Authorization"]
 )
 
 # Import and include API routes
 try:
-    from src.api import auth_routes, task_routes
-    app.include_router(auth_routes.router, prefix="", tags=["Authentication"])  # No prefix since auth_routes already has /auth
-    app.include_router(task_routes.router, prefix="", tags=["Tasks"])  # No prefix since task_routes already has /tasks
+    from .api import auth_routes, task_routes
+    app.include_router(auth_routes.router)  # auth_routes already has /auth prefix
+    app.include_router(task_routes.router)  # task_routes already has /tasks prefix
 except ImportError as e:
     print(f"Critical Error: Could not import API routes: {e}")
     raise e
@@ -110,5 +112,21 @@ except ImportError as e:
 @app.get("/")
 def read_root():
     return {"message": "Welcome to the Todo API - Neon DB Connected"}
+
+# Add a health check endpoint
+@app.get("/health")
+def health_check():
+    return {"status": "healthy", "message": "API is running correctly"}
+
+# Add a test endpoint to verify API functionality
+@app.get("/test")
+def test_endpoint():
+    return {"status": "success", "message": "API is responding correctly"}
+
+# Add API documentation endpoints
+@app.get("/docs")
+def get_docs():
+    from fastapi.openapi.utils import get_openapi
+    return get_openapi(title=app.title, version=app.version, routes=app.routes)
 
 
