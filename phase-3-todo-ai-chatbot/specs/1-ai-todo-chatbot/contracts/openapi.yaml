@@ -1,0 +1,261 @@
+# OpenAPI Specification: AI Todo Chatbot
+
+**Version**: 1.0.0
+**Date**: 2026-02-09
+**Base Path**: /api/{user_id}
+
+## Components
+
+### Schemas
+
+#### UserMessage
+```yaml
+type: object
+properties:
+  conversation_id:
+    type: string
+    format: uuid
+    description: Optional conversation ID to resume existing conversation
+  message:
+    type: string
+    description: Natural language input from user
+required:
+  - message
+```
+
+#### AssistantResponse
+```yaml
+type: object
+properties:
+  conversation_id:
+    type: string
+    format: uuid
+    description: Conversation ID for this session
+  response:
+    type: string
+    description: Natural language response to user
+  tool_calls:
+    type: array
+    items:
+      $ref: '#/components/schemas/ToolCall'
+    description: List of MCP tool calls made during this turn
+required:
+  - conversation_id
+  - response
+```
+
+#### ToolCall
+```yaml
+type: object
+properties:
+  name:
+    type: string
+    description: Name of the MCP tool called
+  parameters:
+    type: object
+    description: Parameters passed to the tool
+required:
+  - name
+  - parameters
+```
+
+#### Task
+```yaml
+type: object
+properties:
+  id:
+    type: string
+    format: uuid
+    description: Task identifier
+  title:
+    type: string
+    description: Task title
+  description:
+    type: string
+    description: Task description (optional)
+  status:
+    type: string
+    enum: [pending, completed]
+    description: Task status
+  created_at:
+    type: string
+    format: date-time
+    description: When task was created
+  updated_at:
+    type: string
+    format: date-time
+    description: When task was last updated
+required:
+  - id
+  - title
+  - status
+  - created_at
+  - updated_at
+```
+
+#### TaskListResponse
+```yaml
+type: object
+properties:
+  tasks:
+    type: array
+    items:
+      $ref: '#/components/schemas/Task'
+required:
+  - tasks
+```
+
+### Security Schemes
+```yaml
+bearerAuth:
+  type: http
+  scheme: bearer
+  bearerFormat: JWT
+```
+
+## Paths
+
+### POST /chat
+Process a chat message and return assistant response.
+
+```yaml
+post:
+  summary: Process chat message
+  operationId: processChat
+  security:
+    - bearerAuth: []
+  parameters:
+    - name: user_id
+      in: path
+      required: true
+      schema:
+        type: string
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/UserMessage'
+  responses:
+    '200':
+      description: Assistant response with tool calls
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AssistantResponse'
+    '400':
+      description: Invalid request
+    '401':
+      description: Unauthorized
+    '500':
+      description: Internal server error
+```
+
+## MCP Tool Contracts
+
+### add_task
+Create a new task.
+
+**Parameters**:
+```json
+{
+  "user_id": "string",
+  "title": "string",
+  "description": "string?"
+}
+```
+
+**Returns**:
+```json
+{
+  "task_id": "string",
+  "title": "string",
+  "status": "string"
+}
+```
+
+### list_tasks
+List tasks for a user.
+
+**Parameters**:
+```json
+{
+  "user_id": "string",
+  "filter": "all|pending|completed"
+}
+```
+
+**Returns**:
+```json
+{
+  "tasks": [
+    {
+      "id": "string",
+      "title": "string",
+      "status": "string",
+      "created_at": "string"
+    }
+  ]
+}
+```
+
+### complete_task
+Mark a task as completed.
+
+**Parameters**:
+```json
+{
+  "user_id": "string",
+  "task_id": "string"
+}
+```
+
+**Returns**:
+```json
+{
+  "task_id": "string",
+  "status": "completed"
+}
+```
+
+### update_task
+Update task details.
+
+**Parameters**:
+```json
+{
+  "user_id": "string",
+  "task_id": "string",
+  "title": "string?",
+  "description": "string?"
+}
+```
+
+**Returns**:
+```json
+{
+  "task_id": "string",
+  "title": "string",
+  "description": "string",
+  "status": "string"
+}
+```
+
+### delete_task
+Delete a task.
+
+**Parameters**:
+```json
+{
+  "user_id": "string",
+  "task_id": "string"
+}
+```
+
+**Returns**:
+```json
+{
+  "task_id": "string",
+  "deleted": true
+}
+```
