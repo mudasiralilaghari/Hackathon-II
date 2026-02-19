@@ -1,5 +1,5 @@
 // API base URL
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://fazalahmed-full-stack-todo-app.hf.space';
 
 /**
  * Signs up a new user
@@ -13,6 +13,14 @@ export const signup = async (userData) => {
       },
       body: JSON.stringify(userData),
     });
+
+    // Check if the response is HTML instead of JSON
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('text/html')) {
+      const htmlResponse = await response.text();
+      console.error('Received HTML response instead of JSON:', htmlResponse.substring(0, 100) + '...');
+      throw new Error('Backend API is returning HTML instead of JSON. Check if the backend is properly deployed and accessible.');
+    }
 
     if (!response.ok) {
       const errorData = await response.json();
@@ -40,6 +48,14 @@ export const signin = async (credentials) => {
       method: 'POST',
       body: formData,
     });
+
+    // Check if the response is HTML instead of JSON
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('text/html')) {
+      const htmlResponse = await response.text();
+      console.error('Received HTML response instead of JSON:', htmlResponse.substring(0, 100) + '...');
+      throw new Error('Backend API is returning HTML instead of JSON. Check if the backend is properly deployed and accessible.');
+    }
 
     if (!response.ok) {
       const errorData = await response.json();
@@ -70,6 +86,14 @@ export const getCurrentUser = async () => {
         'Content-Type': 'application/json',
       },
     });
+
+    // Check if the response is HTML instead of JSON
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('text/html')) {
+      const htmlResponse = await response.text();
+      console.error('Received HTML response instead of JSON:', htmlResponse.substring(0, 100) + '...');
+      throw new Error('Backend API is returning HTML instead of JSON. Check if the backend is properly deployed and accessible.');
+    }
 
     if (!response.ok) {
       const errorData = await response.json();
