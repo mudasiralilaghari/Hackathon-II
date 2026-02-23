@@ -133,6 +133,11 @@ async def lifespan(app: FastAPI):
         register_tool("delete_task", DeleteTaskTool)
 
         print(f"✓ MCP tools registered successfully: {list(get_all_tools().keys())}")
+        
+        # Create database tables
+        from database_init import create_tables
+        create_tables(engine)
+        print("✓ Database tables created successfully")
     except Exception as e:
         print(f"✗ Failed to register MCP tools: {e}")
         import traceback

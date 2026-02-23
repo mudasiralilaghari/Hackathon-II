@@ -1,6 +1,7 @@
 from sqlmodel import SQLModel
-from .models.user import User
-from .models.task import Task
+from models.user import User
+from models.task import Task
+from models.conversation import Conversation
 
 # This module ensures models are only registered once with SQLModel metadata
 def register_models():
