@@ -6,19 +6,19 @@ import importlib
 import sys
 
 # Check if models are already in sys.modules to prevent re-importing
-if 'backend.src.models.user' not in sys.modules:
-    user_module = importlib.import_module('.models.user', package='backend.src')
+if 'models.user' not in sys.modules:
+    user_module = importlib.import_module('models.user')
     User = user_module.User
     UserCreate = user_module.UserCreate
     UserRead = user_module.UserRead
 else:
-    user_module = sys.modules['backend.src.models.user']
+    user_module = sys.modules['models.user']
     User = user_module.User
     UserCreate = user_module.UserCreate
     UserRead = user_module.UserRead
-from ..services.auth_service import authenticate_user, create_user, create_token_for_user
-from ..database import get_session
-from ..middleware.auth import get_current_user
+from services.auth_service import authenticate_user, create_user, create_token_for_user
+from database import get_session
+from middleware.auth import get_current_user
 
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])

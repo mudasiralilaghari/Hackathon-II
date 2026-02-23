@@ -1,31 +1,20 @@
-# Dockerfile for Hugging Face Spaces Deployment
-# Phase-3: Todo AI Chatbot Backend
+FROM python:3.10
 
-FROM python:3.11-slim
-
-# Set working directory
 WORKDIR /app
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    gcc \
-    && rm -rf /var/lib/apt/lists/*
-
-# Copy requirements first (for better caching)
+# Copy requirements first
 COPY requirements.txt .
 
-# Install Python dependencies
+# Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the entire project
-COPY . .
+# Copy backend folder
+COPY backend ./backend
 
-# Expose the port Hugging Face expects
-EXPOSE 7860
+# Set Python path to include backend/src
+ENV PYTHONPATH=/app/backend/src
 
-# Set environment variables
-ENV HOST=0.0.0.0
-ENV PORT=7860
+# Change to backend/src directory and run uvicorn
+WORKDIR /app/backend/src
 
-# Run the backend
-CMD ["python", "run.py", "--host", "0.0.0.0", "--port", "7860"]
+CMD ["python", "-m", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "7860"]

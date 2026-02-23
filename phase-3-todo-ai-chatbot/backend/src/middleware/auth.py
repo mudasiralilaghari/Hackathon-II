@@ -6,8 +6,8 @@ from jose.exceptions import JWTError as PyJWTError
 from fastapi import HTTPException, status, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlmodel import Session, select
-from ..models.user import User
-from ..database import get_session
+from models.user import User
+from database import get_session
 import logging
 
 # Set up logging

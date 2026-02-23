@@ -1,7 +1,7 @@
 from sqlmodel import Session, select
-from ..models.user import User, UserCreate
+from models.user import User, UserCreate
 from passlib.context import CryptContext
-from ..middleware.auth import create_access_token
+from middleware.auth import create_access_token
 from typing import Optional
 import uuid
 

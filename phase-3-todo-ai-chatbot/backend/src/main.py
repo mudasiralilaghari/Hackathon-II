@@ -44,8 +44,8 @@ engine = create_engine(
 
 
 # Import models from the models module
-from .models.user import User, UserCreate, UserBase
-from .models.task import Task
+from models.user import User, UserCreate, UserBase
+from models.task import Task
 
 
 # Password hashing - using argon2 instead of bcrypt to avoid 72-char limit
@@ -155,11 +155,11 @@ app.add_middleware(
 
 # Import and include API routes
 try:
-    from .api.auth_routes import router as auth_router
-    from .api.task_routes import router as task_router
-    from .api.chat import router as chat_router
-    from .api.chatkit import app as chatkit_router  # ChatKit router
-    from .mcp.server import app as mcp_router, setup_startup_event  # MCP server as a router
+    from api.auth_routes import router as auth_router
+    from api.task_routes import router as task_router
+    from api.chat import router as chat_router
+    from api.chatkit import app as chatkit_router  # ChatKit router
+    from mcp.server import app as mcp_router, setup_startup_event  # MCP server as a router
     app.include_router(auth_router)  # auth_routes already has /auth prefix
     app.include_router(task_router)  # task_routes already has /tasks prefix
     app.include_router(chat_router)  # chat routes under /api/{user_id}/chat

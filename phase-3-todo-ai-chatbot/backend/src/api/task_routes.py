@@ -7,34 +7,34 @@ import importlib
 import sys
 
 # Check if models are already in sys.modules to prevent re-importing
-if 'backend.src.models.task' not in sys.modules:
-    task_module = importlib.import_module('.models.task', package='backend.src')
+if 'models.task' not in sys.modules:
+    task_module = importlib.import_module('models.task')
     Task = task_module.Task
     TaskCreate = task_module.TaskCreate
     TaskRead = task_module.TaskRead
     TaskUpdate = task_module.TaskUpdate
     TaskPatch = task_module.TaskPatch
 else:
-    task_module = sys.modules['backend.src.models.task']
+    task_module = sys.modules['models.task']
     Task = task_module.Task
     TaskCreate = task_module.TaskCreate
     TaskRead = task_module.TaskRead
     TaskUpdate = task_module.TaskUpdate
     TaskPatch = task_module.TaskPatch
 
-from ..services.task_service import (
+from services.task_service import (
     create_task, get_tasks, get_task, update_task,
     delete_task, toggle_task_completion
 )
-from ..database import get_session
-from ..middleware.auth import get_current_user
+from database import get_session
+from middleware.auth import get_current_user
 
 # Import User model
-if 'backend.src.models.user' not in sys.modules:
-    user_module = importlib.import_module('.models.user', package='backend.src')
+if 'models.user' not in sys.modules:
+    user_module = importlib.import_module('models.user')
     User = user_module.User
 else:
-    user_module = sys.modules['backend.src.models.user']
+    user_module = sys.modules['models.user']
     User = user_module.User
 
 
