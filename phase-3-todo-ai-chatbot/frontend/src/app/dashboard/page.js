@@ -305,11 +305,11 @@ export default function DashboardPage() {
 
           {/* Right Column - AI Chat Assistant */}
           <div className="lg:col-span-1">
-            <div className="bg-white shadow rounded-lg p-6 h-full">
+            <div className="bg-white shadow rounded-lg p-6 h-[600px]">
               <h2 className="text-xl font-semibold mb-4">AI Todo Assistant</h2>
               <p className="text-gray-600 mb-4">Ask me to help manage your tasks!</p>
-              
-              <div className="h-[calc(100%-80px)]" style={{ minHeight: '500px' }}>
+
+              <div className="h-[520px] overflow-visible">
                 {user ? (
                   <ChatWidget userId={user.id || user.email || user.username} />
                 ) : (
