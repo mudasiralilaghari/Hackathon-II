@@ -21,7 +21,7 @@ from database import get_session
 from middleware.auth import get_current_user
 
 
-router = APIRouter(prefix="/auth", tags=["Authentication"])
+router = APIRouter(tags=["Authentication"])
 
 
 @router.post("/signup", response_model=UserRead)

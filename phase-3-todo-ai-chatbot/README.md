@@ -1,52 +1,29 @@
-# Todo AI Chatbot - Hackathon Phase III
+---
+title: Phase3 AI Todo
+emoji: 🤖
+colorFrom: blue
+colorTo: gray
+sdk: docker
+python_version: "3.10"
+app_file: run.py
+pinned: false
+---
 
-## 🚀 Quick Start
+# Phase 3 AI Todo Chatbot
 
-### Environment Setup
-```bash
-pip install -r requirements.txt
-```
+AI-powered todo application with natural language task management.
 
-### Run Backend Server
-```bash
-python run.py
-```
+## Features
 
-### Frontend
-The frontend is ready to connect to `http://localhost:8000`
+- ✅ Natural language task management
+- ✅ AI chat assistant
+- ✅ User authentication
+- ✅ Task CRUD operations
 
-## ⚠️ Import Path Workaround (Hackathon Environment)
+## Backend API
 
-**This is NOT an architectural issue** - it's a Python environment/path resolution problem specific to the hackathon setup.
-
-### Problem:
-- Python relative imports fail in the current environment due to module path resolution issues
-- This affects only the server startup, NOT the core logic, MCP tools, or agent behavior
-
-### Solution:
-- `run.py` file provides a clean workaround by explicitly adding `backend/src` to Python path
-- All core functionality remains unchanged and follows official specifications
-
-### Verification:
-- ✅ MCP tools: add_task, list_tasks, complete_task, update_task, delete_task
-- ✅ OpenAI Agents SDK integration pattern
-- ✅ Official OpenAI ChatKit frontend compatibility
-- ✅ Database connection to Neon PostgreSQL
-- ✅ Stateful conversation continuity
-- ✅ Secure user task isolation
-
-## 📋 Architecture Compliance
-
-- **MCP Specification**: Full compliance with official schema.ts
-- **OpenAI Agents SDK**: Uses MCPServerStdio configuration pattern
-- **OpenAI ChatKit**: Follows official documentation for server-side token generation and client-side configuration
-- **Constitution v1.0.0**: All 6 principles satisfied
-
-## 🧪 Testing
-
-Once server is running:
-- Visit `http://localhost:8000/docs` for API documentation
-- Test endpoints: `/api/{user_id}/chat`, `/mcp/`
-- Verify database tables: tasks, conversations, messages
-
-The system is production-ready for hackathon submission.
+- Health: `/health`
+- Auth: `/auth/signup`, `/auth/signin`
+- Tasks: `/tasks`
+- Chat: `/api/{user_id}/chat`
+- MCP: `/mcp/mcp`

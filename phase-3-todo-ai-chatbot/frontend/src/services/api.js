@@ -118,7 +118,7 @@ export const authAPI = {
 
 export const taskAPI = {
   getTasks: async () => {
-    const response = await apiCall('/tasks');
+    const response = await apiCall('/tasks/');
     // Check if the response is HTML instead of JSON
     const contentType = response.headers.get('content-type');
     if (contentType && contentType.includes('text/html')) {
@@ -133,7 +133,7 @@ export const taskAPI = {
   },
 
   createTask: async (taskData) => {
-    const response = await apiCall('/tasks', {
+    const response = await apiCall('/tasks/', {
       method: 'POST',
       body: JSON.stringify(taskData),
     });

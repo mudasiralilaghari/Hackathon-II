@@ -21,7 +21,9 @@ class User(UserBase, table=True):
     
 
 
-class UserCreate(UserBase):
+class UserCreate(SQLModel):
+    email: str
+    username: str
     password: str
 
 

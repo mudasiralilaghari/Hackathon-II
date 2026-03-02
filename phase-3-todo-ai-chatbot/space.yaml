@@ -1,31 +1,3 @@
-# Hugging Face Spaces configuration for Phase-3 Backend
-# This tells Hugging Face how to run your backend
-
-# SDK to use (docker gives you full control)
 sdk: docker
-
-# Docker configuration
 docker:
-  # Use Python base image
-  base_image: python:3.11-slim
-  
-  # Commands to run when the Space starts
-  cmd: python run.py --host 0.0.0.0 --port 7860
-
-# Environment variables (add your secrets in Hugging Face UI)
-env:
-  # These will be set in Hugging Face Secrets
-  - name: OPENAI_API_KEY
-    description: Your OpenAI API key for ChatKit
-  - name: DATABASE_URL
-    description: PostgreSQL connection string (Neon DB)
-
-# Hardware configuration
-hardware:
-  # Free tier: cpu-basic, cpu-upgrade, t4-small, t4-medium, a10g-small, a10g-large, a100-large
-  current: cpu-basic
-
-# Ports to expose
-ports:
-  - port: 7860
-    visibility: public
+  base_image: python:3.10-slim

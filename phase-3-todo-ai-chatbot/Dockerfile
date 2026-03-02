@@ -8,13 +8,12 @@ COPY requirements.txt .
 # Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy backend folder
-COPY backend ./backend
+# Copy all project files
+COPY . .
 
-# Set Python path to include backend/src
+# Set Python path
 ENV PYTHONPATH=/app/backend/src
 
-# Change to backend/src directory and run uvicorn
-WORKDIR /app/backend/src
-
-CMD ["python", "-m", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "7860"]
+# Run using run.py (which has proper path setup)
+# REBUILD TRIGGER: 2026-02-25 18:00
+CMD ["python", "run.py"]

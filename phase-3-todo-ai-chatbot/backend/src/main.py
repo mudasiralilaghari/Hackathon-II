@@ -147,34 +147,32 @@ async def lifespan(app: FastAPI):
 
 
 # Create FastAPI app
-app = FastAPI(lifespan=lifespan)
+app = FastAPI(lifespan=lifespan, redirect_slashes=False)  # Fixed: disable redirect
 
 # Add CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],  # Allow frontend origins
+    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000", "*"],  # Allow all origins for production
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"]
 )
 
-# Import and include API routes
-try:
-    from api.auth_routes import router as auth_router
-    from api.task_routes import router as task_router
-    from api.chat import router as chat_router
-    from api.chatkit import app as chatkit_router  # ChatKit router
-    from mcp.server import app as mcp_router, setup_startup_event  # MCP server as a router
-    app.include_router(auth_router)  # auth_routes already has /auth prefix
-    app.include_router(task_router)  # task_routes already has /tasks prefix
-    app.include_router(chat_router)  # chat routes under /api/{user_id}/chat
-    app.include_router(chatkit_router)  # ChatKit routes under root level
-    app.include_router(mcp_router, prefix="/mcp")  # MCP routes under /mcp prefix
-    # Setup startup event for MCP tools registration
-    setup_startup_event(app)
-except ImportError as e:
-    print(f"Critical Error: Could not import API routes: {e}")
-    raise e
+# Import and include API routes - NO try-except, let it fail loudly
+from api.auth_routes import router as auth_router
+from api.task_routes import router as task_router
+from api.chat import router as chat_router
+from api.chatkit import app as chatkit_router  # ChatKit router
+from mcp.server import app as mcp_router, setup_startup_event  # MCP server as a router
+
+app.include_router(auth_router, prefix="/auth")  # Add /auth prefix
+app.include_router(task_router, prefix="/tasks")  # Add /tasks prefix
+app.include_router(chat_router, prefix="/api")  # Add /api prefix for chat
+app.include_router(chatkit_router)  # ChatKit routes under root level
+app.include_router(mcp_router, prefix="/mcp")  # MCP routes under /mcp prefix
+
+# Setup startup event for MCP tools registration
+setup_startup_event(app)
 
 
 @app.get("/")
