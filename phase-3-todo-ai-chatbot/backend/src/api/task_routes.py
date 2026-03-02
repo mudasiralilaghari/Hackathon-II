@@ -8,6 +8,7 @@ from models.task import Task, TaskCreate, TaskRead, TaskUpdate, TaskPatch
 from models.user import User
 from database import get_session
 from middleware.auth import get_current_user
+from services.task_service import get_task, update_task as service_update_task, delete_task as service_delete_task, toggle_task_completion as service_toggle_task
 
 router = APIRouter(tags=["Tasks"], redirect_slashes=False)
 
@@ -68,7 +69,7 @@ def update_task_for_user(
     session: Session = Depends(get_session)
 ):
     """Update a specific task for the current user"""
-    updated_task = update_task(session, task_id, task_update, current_user.id)
+    updated_task = service_update_task(session, task_id, task_update, current_user.id)
     if not updated_task:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -84,7 +85,7 @@ def delete_task_for_user(
     session: Session = Depends(get_session)
 ):
     """Delete a specific task for the current user"""
-    success = delete_task(session, task_id, current_user.id)
+    success = service_delete_task(session, task_id, current_user.id)
     if not success:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -100,7 +101,7 @@ def toggle_task_completion_status(
     session: Session = Depends(get_session)
 ):
     """Toggle the completion status of a task for the current user"""
-    toggled_task = toggle_task_completion(session, task_id, current_user.id)
+    toggled_task = service_toggle_task(session, task_id, current_user.id)
     if not toggled_task:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
