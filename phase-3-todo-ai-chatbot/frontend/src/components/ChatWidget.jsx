@@ -7,6 +7,7 @@ import { useChatKit, ChatKit } from '@openai/chatkit-react';
 export function ChatWidget({ userId }) {
   const [scriptStatus, setScriptStatus] = useState('pending');
   const [error, setError] = useState(null);
+  const [showFallback, setShowFallback] = useState(false);
 
   // Wait for ChatKit web component to be defined
   useEffect(() => {
@@ -31,16 +32,17 @@ export function ChatWidget({ userId }) {
         console.error('ChatWidget: Failed to load ChatKit:', err);
         setError(err);
         setScriptStatus('error');
+        setShowFallback(true);
       });
 
-    // Timeout after 30 seconds (give it more time to load)
+    // Timeout after 5 seconds - show fallback UI
     setTimeout(() => {
       if (scriptStatus === 'pending') {
-        console.warn('ChatWidget: ChatKit loading timeout - keeping UI visible');
-        // Don't set error - keep UI visible even if script doesn't load
+        console.warn('ChatWidget: ChatKit loading timeout - showing fallback');
+        setShowFallback(true);
         setScriptStatus('ready');
       }
-    }, 30000);
+    }, 5000);
   }, []);
 
   // Configure ChatKit with backend endpoint that creates sessions
@@ -54,7 +56,7 @@ export function ChatWidget({ userId }) {
         try {
           const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
           console.log('ChatWidget: Calling backend at:', `${apiUrl}/api/chatkit/session`);
-          
+
           const res = await fetch(`${apiUrl}/api/chatkit/session`, {
             method: 'POST',
             headers: {
@@ -77,22 +79,46 @@ export function ChatWidget({ userId }) {
           return data.client_secret;
         } catch (error) {
           console.error('ChatWidget: Error getting client secret:', error.message);
-          // Don't throw - return null to keep UI visible
+          setShowFallback(true);
           return null;
         }
       },
     },
   });
-  
-  // Log any ChatKit errors
+
+  // If ChatKit fails to get client secret, show fallback message
   useEffect(() => {
-    if (chatKitError) {
+    if (chatKitError || !control) {
       console.error('ChatWidget: ChatKit error:', chatKitError);
-      // Don't set error state - keep UI visible
-      // setError(chatKitError);
-      // setScriptStatus('error');
+      setShowFallback(true);
     }
-  }, [chatKitError]);
+  }, [chatKitError, control]);
+
+  // Show fallback UI if ChatKit fails
+  if (showFallback) {
+    return (
+      <div className="flex flex-col items-center justify-center h-full bg-gray-50 p-4">
+        <div className="text-center">
+          <div className="text-4xl mb-4">🤖</div>
+          <h3 className="text-lg font-semibold text-gray-800 mb-2">AI Todo Assistant</h3>
+          <p className="text-sm text-gray-600 mb-4">
+            ChatKit is currently unavailable. This usually happens when using OpenRouter API keys.
+          </p>
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 text-left">
+            <p className="text-xs text-blue-800 font-medium mb-2">To enable ChatKit:</p>
+            <ol className="text-xs text-blue-700 space-y-1 list-decimal list-inside">
+              <li>Get an official OpenAI API key from <a href="https://platform.openai.com/api-keys" target="_blank" className="underline">platform.openai.com</a></li>
+              <li>Update your backend .env file with the new key</li>
+              <li>Redeploy your backend</li>
+            </ol>
+          </div>
+          <p className="text-xs text-gray-500 mt-4">
+            Note: Your task management features (add, list, update, delete) are still working perfectly!
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   // Render based on script loading state
   if (scriptStatus === 'pending') {
