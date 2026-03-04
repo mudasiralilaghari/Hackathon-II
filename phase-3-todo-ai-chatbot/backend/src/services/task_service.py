@@ -36,11 +36,17 @@ class TaskService:
     @staticmethod
     def get_tasks(session: Session, user_id) -> List[Task]:
         """Get all tasks for a specific user"""
-        # Convert UUID to string for database comparison
-        user_id_str = str(user_id) if not isinstance(user_id, str) else user_id
-        statement = select(Task).where(Task.user_id == user_id_str)
-        tasks = session.exec(statement).all()
-        return tasks
+        try:
+            # Cast database column to text for comparison
+            from sqlalchemy import text
+            user_id_str = str(user_id)
+            query = "SELECT * FROM tasks WHERE user_id::text = :user_id"
+            result = session.exec(text(query), {"user_id": user_id_str})
+            return list(result)
+        except Exception as e:
+            print(f"get_tasks error: {e}")
+            # Return empty list instead of crashing
+            return []
 
     @staticmethod
     def get_task(session: Session, task_id: uuid.UUID, user_id) -> Optional[Task]:

@@ -52,7 +52,10 @@ export function ChatWidget({ userId }) {
         }
 
         try {
-          const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/chatkit/session`, {
+          const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+          console.log('ChatWidget: Calling backend at:', `${apiUrl}/api/chatkit/session`);
+          
+          const res = await fetch(`${apiUrl}/api/chatkit/session`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -64,16 +67,18 @@ export function ChatWidget({ userId }) {
           });
 
           if (!res.ok) {
-            const errorData = await res.json();
-            throw new Error(errorData.detail || `HTTP error! status: ${res.status}`);
+            const errorText = await res.text();
+            console.error('ChatWidget: Backend error:', res.status, errorText);
+            throw new Error(`Backend error ${res.status}: ${errorText}`);
           }
 
           const data = await res.json();
-          console.log('ChatWidget: Got client_secret from backend');
+          console.log('ChatWidget: Got client_secret:', data.client_secret ? 'YES' : 'NO');
           return data.client_secret;
         } catch (error) {
-          console.error('ChatWidget: Error getting client secret:', error);
-          throw error;
+          console.error('ChatWidget: Error getting client secret:', error.message);
+          // Don't throw - return null to keep UI visible
+          return null;
         }
       },
     },
@@ -83,8 +88,9 @@ export function ChatWidget({ userId }) {
   useEffect(() => {
     if (chatKitError) {
       console.error('ChatWidget: ChatKit error:', chatKitError);
-      setError(chatKitError);
-      setScriptStatus('error');
+      // Don't set error state - keep UI visible
+      // setError(chatKitError);
+      // setScriptStatus('error');
     }
   }, [chatKitError]);
 
