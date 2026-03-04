@@ -37,7 +37,8 @@ export function SimpleChat({ userId }) {
 
     try {
       // Call our backend chat endpoint
-      const response = await fetch(`http://localhost:8000/api/${userId}/chat`, {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+      const response = await fetch(`${apiUrl}/api/${userId}/chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

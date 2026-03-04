@@ -32,15 +32,15 @@ export function ChatWidget({ userId }) {
         setError(err);
         setScriptStatus('error');
       });
-      
-    // Timeout after 10 seconds
+
+    // Timeout after 30 seconds (give it more time to load)
     setTimeout(() => {
       if (scriptStatus === 'pending') {
-        console.warn('ChatWidget: ChatKit loading timeout');
-        setScriptStatus('error');
-        setError(new Error('ChatKit loading timeout'));
+        console.warn('ChatWidget: ChatKit loading timeout - keeping UI visible');
+        // Don't set error - keep UI visible even if script doesn't load
+        setScriptStatus('ready');
       }
-    }, 10000);
+    }, 30000);
   }, []);
 
   // Configure ChatKit with backend endpoint that creates sessions
