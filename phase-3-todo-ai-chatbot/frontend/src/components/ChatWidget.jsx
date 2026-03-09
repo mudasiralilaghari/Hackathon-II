@@ -45,45 +45,13 @@ export function ChatWidget({ userId }) {
     }, 5000);
   }, []);
 
-  // Configure ChatKit with backend endpoint that creates sessions
+  // Configure ChatKit with domain key (official OpenAI way)
   const { control, error: chatKitError } = useChatKit({
-    api: {
-      async getClientSecret(existing) {
-        if (existing) {
-          return existing;
-        }
-
-        try {
-          const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-          console.log('ChatWidget: Calling backend at:', `${apiUrl}/api/chatkit/session`);
-
-          const res = await fetch(`${apiUrl}/api/chatkit/session`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              workflow_id: 'wf_699350450ccc81908932f504ede340440b8b47cbb80e0405',
-              user_id: userId || 'default_user',
-            }),
-          });
-
-          if (!res.ok) {
-            const errorText = await res.text();
-            console.error('ChatWidget: Backend error:', res.status, errorText);
-            throw new Error(`Backend error ${res.status}: ${errorText}`);
-          }
-
-          const data = await res.json();
-          console.log('ChatWidget: Got client_secret:', data.client_secret ? 'YES' : 'NO');
-          return data.client_secret;
-        } catch (error) {
-          console.error('ChatWidget: Error getting client secret:', error.message);
-          setShowFallback(true);
-          return null;
-        }
-      },
+    workflow: {
+      id: process.env.NEXT_PUBLIC_CHATKIT_WORKFLOW_ID || 'wf_699350450ccc81908932f504ede340440b8b47cbb80e0405',
     },
+    user: userId || 'default_user',
+    domainKey: process.env.NEXT_PUBLIC_OPENAI_DOMAIN_KEY,
   });
 
   // If ChatKit fails to get client secret, show fallback message
