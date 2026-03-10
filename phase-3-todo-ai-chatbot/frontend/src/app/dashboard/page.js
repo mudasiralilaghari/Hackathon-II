@@ -6,6 +6,15 @@ import { authAPI, taskAPI } from '../../services/api';
 import ChatWidget from '../../components/ChatWidget';
 
 export default function DashboardPage() {
+  // Debug: Log environment variables
+  useEffect(() => {
+    console.log('Dashboard Env Check:', {
+      domainKey: typeof window !== 'undefined' ? window?.__ENV?.NEXT_PUBLIC_OPENAI_DOMAIN_KEY : 'undefined',
+      workflow: 'wf_699350450ccc81908932f504ede340440b8b47cbb80e0405',
+      api: typeof window !== 'undefined' ? window?.__ENV?.NEXT_PUBLIC_API_URL : 'undefined'
+    });
+  }, []);
+
   const [user, setUser] = useState(null);
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
