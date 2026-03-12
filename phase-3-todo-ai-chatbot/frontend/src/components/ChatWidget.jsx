@@ -4,13 +4,16 @@
 import { useChatKit, ChatKit } from '@openai/chatkit-react';
 
 export function ChatWidget({ userId }) {
-  // Official OpenAI ChatKit configuration with error handling
+  // Official OpenAI ChatKit configuration with api object
   const { control, error } = useChatKit({
+    api: {
+      // Use the hosted ChatKit option with domainKey
+      domainKey: process.env.NEXT_PUBLIC_OPENAI_DOMAIN_KEY,
+    },
     workflow: {
       id: process.env.NEXT_PUBLIC_CHATKIT_WORKFLOW_ID || 'wf_699350450ccc81908932f504ede340440b8b47cbb80e0405',
     },
     user: userId || 'default_user',
-    domainKey: process.env.NEXT_PUBLIC_OPENAI_DOMAIN_KEY,
   });
 
   // Debug logging
